@@ -1,34 +1,61 @@
 import sys
+import operator
+import argparse
 
-def calc(znak, a, b):
-    """1 = + \ 2 = - \ 3 = * \ 4 = / """
-    if znak == 1:
-        print("Rezultat", a+b)
-    elif znak == 2:
-        if a>b:
-            print("Rezultat", a-b)
-        else:
-            print("Rezultat", b-a)
-    elif znak == 3:
-        print("Rezultat", a*b)
-    elif znak == 4:
-        try:
-            print("Rezultat", a/b)
-        except ZeroDivisionError:
-            print("ZeroDivisionError\n nie mozna rozdelic na 0")
+keys_job = {1 : operator.add, 2 : operator.sub, 3 : operator.mul, 4 : operator.truediv}
+
+_help = "Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie:"
+
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('operations', help=_help, type=int)
+parser.add_argument('first_number', help="Enter number one.", type=int)
+parser.add_argument('two_number', help="Enter number two.", type=int)
+
+args = parser.parse_args()
+
+def calc():
+    try:
+        print("Rezultat",keys_job[args.operations](args.first_number, args.two_number))
+    except:
+        print(_help)
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 :
-        znak, a, b = sys.argv[1:]
-        calc(int(znak), int(a), int(b))
-    elif len(sys.argv) <= 1:
-        print("nie bylo podane zadnyh argumentuw do calkulatora")
+    calc()
     while True:
         io = input("Continue Y / N\n").lower()
         if "n" == io:
             exit()
-        znak = int(input(
-            "Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie:\n"))
+        keys = int(input(f"{_help}\n"))
         a = int(input("Podaj perwszom liczbę:\n"))
         b = int(input("Podaj drugom liczbę:\n"))
-        calc(znak, a, b)
+        print("Rezultat\n",keys_job[keys](a, b))
+
+
+
+
+
+
+
+
+    # if len(sys.argv) > 1 < 3:
+    #     # if sus.argv[1] == int and sus.argv[2] == int and sus.argv[3] == int:
+    #     keys, a, b = sys.argv[1:]
+    #     keys_job[keys](a,b)
+    #
+    # elif len(sys.argv) > 3:
+    #     print("Zaduzo argumentuv")
+    # elif len(sys.argv) <= 1:
+    #     print("nie bylo podane zadnyh argumentuw do calkulatora")
+    #
+    # while True:
+    #     io = input("Continue Y / N\n").lower()
+    #     if "n" == io:
+    #         exit()
+    #     keys = int(input(
+    #         "Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie:\n"))
+    #     a = int(input("Podaj perwszom liczbę:\n"))
+    #     b = int(input("Podaj drugom liczbę:\n"))
+    #     keys_job[keys](a,b)
