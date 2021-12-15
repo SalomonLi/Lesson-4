@@ -6,24 +6,27 @@ keys_job = {1 : operator.add, 2 : operator.sub, 3 : operator.mul, 4 : operator.t
 
 _help = "Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie:"
 
-
-
 parser = argparse.ArgumentParser()
-parser.add_argument('operations', help=_help, type=int)
-parser.add_argument('first_number', help="Enter number one.", type=int)
-parser.add_argument('two_number', help="Enter number two.", type=int)
 
-args = parser.parse_args()
+def parsers():
+    parser.add_argument('operations', help=_help, type=int)
+    parser.add_argument('first_number', help="Enter number one.", type=int)
+    parser.add_argument('two_number', help="Enter number two.", type=int)
+    args = parser.parse_args()
+    return args
 
-def calc():
+def calc(args):
     try:
         print("Rezultat",keys_job[args.operations](args.first_number, args.two_number))
-    except:
+    except ZeroDivisionError:
+        print("nie mozna rozdelic na 0 ")
+    except KeyError:
         print(_help)
 
 
+
 if __name__ == "__main__":
-    calc()
+    calc(parsers())
     while True:
         io = input("Continue Y / N\n").lower()
         if "n" == io:
